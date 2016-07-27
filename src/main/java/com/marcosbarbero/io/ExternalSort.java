@@ -115,7 +115,7 @@ public class ExternalSort {
      * @return The number of files merged
      * @throws IOException
      */
-    public static int mergeSortedFiles(final List<File> files, final File outputFile,
+    private static int mergeSortedFiles(final List<File> files, final File outputFile,
                                        final Comparator<String> comparator, final Charset charset) throws IOException {
         final ArrayList<BinaryFileBuffer> buffers = new ArrayList<>();
         for (File file : files) {
