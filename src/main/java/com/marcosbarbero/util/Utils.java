@@ -1,4 +1,4 @@
-package com.marcosbarbero.utils;
+package com.marcosbarbero.util;
 
 /**
  * @author Marcos Barbero

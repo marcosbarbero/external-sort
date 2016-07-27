@@ -1,6 +1,6 @@
 package com.marcosbarbero.io;
 
-import com.marcosbarbero.utils.Utils;
+import com.marcosbarbero.util.Utils;
 
 import java.io.*;
 import java.nio.charset.Charset;

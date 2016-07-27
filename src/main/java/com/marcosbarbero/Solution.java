@@ -1,7 +1,7 @@
 package com.marcosbarbero;
 
 import com.marcosbarbero.io.ExternalSort;
-import com.marcosbarbero.io.LineComparator;
+import com.marcosbarbero.util.LineComparator;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ public class Solution {
     private static final String OUTPUT = "output.txt";
 
     public static void main(String... args) throws IOException {
+        logger.info("Starting the external sorting reading input.txt file");
         Instant start = Instant.now();
         final Comparator<String> lineComparator = new LineComparator();
         final List<File> files = ExternalSort.sortInBatch(new File(INPUT), lineComparator);
