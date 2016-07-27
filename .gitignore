@@ -1,4 +1,5 @@
 .idea
 /target
-*.txt
 *.iml
+input.txt
+output.txt

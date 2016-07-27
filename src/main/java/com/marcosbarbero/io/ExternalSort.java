@@ -4,7 +4,10 @@ import com.marcosbarbero.util.Utils;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -17,12 +20,32 @@ public class ExternalSort {
     private static final String TEMP_FILE_SUFFIX = "flatFile";
     private static final String EMPTY_STRING = "";
 
+    /**
+     * Sort the file in batch, extracting int into n tmp files.
+     *
+     * @param file       The file to be sorted
+     * @param comparator The comparator to be used in whole process
+     * @return A list of sorted temp files
+     * @throws IOException
+     */
     public static List<File> sortInBatch(final File file, final Comparator<String> comparator) throws IOException {
         final Charset charset = Charset.defaultCharset();
         final BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
         return sortInBatch(reader, file.length(), comparator, DEFAULT_MAX_TEMP_FILES, Utils.estimateAvailableMemory(), charset);
     }
 
+    /**
+     * Sort the file in batch, extracting int into n tmp files.
+     *
+     * @param reader       The buffered read to be sorted
+     * @param dataLength   The length of current file
+     * @param comparator   The comparator
+     * @param maxTempFiles The max temp files to be created
+     * @param maxMemory    The available memory
+     * @param charset      The Charset
+     * @return A list of sorted temp files
+     * @throws IOException
+     */
     private static List<File> sortInBatch(final BufferedReader reader, final long dataLength,
                                           final Comparator<String> comparator, final int maxTempFiles,
                                           final long maxMemory, final Charset charset) throws IOException {
@@ -53,17 +76,45 @@ public class ExternalSort {
         return files;
     }
 
+    /**
+     * Add the sorted file into a list of temp files.
+     *
+     * @param files      The list of temp files
+     * @param lines      The lines of the current file
+     * @param comparator The comparator
+     * @param charset    The charset
+     * @throws IOException
+     */
     private static void add(final List<File> files, final List<String> lines,
                             final Comparator<String> comparator, final Charset charset) throws IOException {
         files.add(sortAndSave(lines, comparator, charset));
     }
 
 
+    /**
+     * Merge the sorted files.
+     *
+     * @param files      The files
+     * @param outputFile The output file
+     * @param comparator The comparator
+     * @return The number of files merged
+     * @throws IOException
+     */
     public static int mergeSortedFiles(final List<File> files, final File outputFile, final Comparator<String> comparator)
             throws IOException {
         return mergeSortedFiles(files, outputFile, comparator, Charset.defaultCharset());
     }
 
+    /**
+     * Merge the sorted files
+     *
+     * @param files      The files to be merged
+     * @param outputFile The output file
+     * @param comparator The comparator
+     * @param charset    The Charset
+     * @return The number of files merged
+     * @throws IOException
+     */
     public static int mergeSortedFiles(final List<File> files, final File outputFile,
                                        final Comparator<String> comparator, final Charset charset) throws IOException {
         final ArrayList<BinaryFileBuffer> buffers = new ArrayList<>();
@@ -77,10 +128,15 @@ public class ExternalSort {
         return mergeSortedFiles(writer, comparator, buffers);
     }
 
-    private static Comparator<BinaryFileBuffer> binaryFileBufferComparator(final Comparator<String> comparator) {
-        return (i, j) -> comparator.compare(i.peek(), j.peek());
-    }
-
+    /**
+     * Merge the sorted files.
+     *
+     * @param writer     BufferedWriter
+     * @param comparator The comparator to be used
+     * @param buffers    A list of BinaryFileBuffer
+     * @return The number of files merged
+     * @throws IOException
+     */
     private static int mergeSortedFiles(final BufferedWriter writer,
                                         final Comparator<String> comparator,
                                         final List<BinaryFileBuffer> buffers) throws IOException {
@@ -115,6 +171,25 @@ public class ExternalSort {
 
     }
 
+    /**
+     * Creates a Comparator for BinaryFileBuffer.
+     *
+     * @param comparator The default comparator used on whole process
+     * @return The BinaryFileBuffer comparator
+     */
+    private static Comparator<BinaryFileBuffer> binaryFileBufferComparator(final Comparator<String> comparator) {
+        return (i, j) -> comparator.compare(i.peek(), j.peek());
+    }
+
+    /**
+     * Sort the lines and save into a temporary file.
+     *
+     * @param lines      The text lines
+     * @param comparator The comparator
+     * @param charset    The Charset
+     * @return The temp file
+     * @throws IOException
+     */
     private static File sortAndSave(final List<String> lines,
                                     final Comparator<String> comparator,
                                     final Charset charset) throws IOException {
