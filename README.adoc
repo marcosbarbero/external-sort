@@ -1,8 +1,12 @@
 = External Sorting
 
 == Definition
-Java implementation of https://en.wikipedia.org/wiki/External_sorting[External Sorting] algorithm.   
-This implementation will look for a file named `input.txt` in the root of this project and will produce a file named `output.txt`.
+Java implementation of https://en.wikipedia.org/wiki/External_sorting[External Sorting] algorithm.
+   
+== Technologies
+   
+   - Maven 3.3.x
+   - Java 1.8
  
 == Hint
 To generate a sample file just execute the following command in any *nix OS.
@@ -11,3 +15,21 @@ To generate a sample file just execute the following command in any *nix OS.
 ruby -e 'a=STDIN.readlines;5000000.times do;b=[];16.times do; b << a[rand(a.size)].chomp end; puts b.join(" "); end' < /usr/share/dict/words > input.txt
 ```
  
+== Build & Run
+
+To build execute the command:
+```
+$ mvn clean package
+```
+
+This command will generate an artifact `target/external-sort.jar` that is a executable jar. 
+To run this project you can inform an input and an output file by command line arguments, but they optional parameters.
+The default implementation will look for a file named `input.txt` in the root of this project and will produce a file named `output.txt`.
+
+To run execute the following command:
+```
+$ java -Dinput.file=/path/to/input.txt -Doutput.file=/path/to/output.txt -jar target/external-sort.jar
+```
+
+>To build this project you must have Java 1.8 and Maven configured
+>Make sure the current user have read/write permission on informed dirs
