@@ -1,4 +1,6 @@
 = External Sorting
+
+== Definition
 Java implementation of https://en.wikipedia.org/wiki/External_sorting[External Sorting] algorithm.   
 This implementation will look for a file named `input.txt` in the root of this project and will produce a file named `output.txt`.
  
