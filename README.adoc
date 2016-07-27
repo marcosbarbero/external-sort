@@ -31,5 +31,6 @@ To run execute the following command:
 $ java -Dinput.file=/path/to/input.txt -Doutput.file=/path/to/output.txt -jar target/external-sort.jar
 ```
 
--> To build this project you must have Java 1.8 and Maven configured  
--> Make sure the current user have read/write permission on informed dirs
+IMPORTANT: To build this project you must have Java 1.8 and Maven configured
+  
+IMPORTANT: Make sure the current user have read/write permission on informed dirs
